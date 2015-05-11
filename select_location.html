@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/tipped/tipped.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/tipped/tipped.css"/>
+
+<style>
+html, body {
+    height: 100%;
+}
+div.scroll {
+    position:absolute;
+    overflow-y: scroll;
+    height: 100%;
+    width: 27%;
+    position: relative;
+    float: right;
+}
+div.scroll ul{
+    list-style-type: none;
+}
+#map {
+    float:left;
+    position: absolute;
+    height: 100%;
+
+}
+#map-img {
+    max-width: 73%;
+    height: 100%;
+}
+
+.image-title{
+    text-align: center;
+}
+
+.tooltip{
+    position:absolute;
+    z-index:999;
+    left:-9999px;
+    background-color:#E3E0B6;
+    padding:5px;
+    border:1px solid #000000;
+    width:265px;
+    border-radius: 0px 25px 25px 25px;
+}
+.tooltip img{
+    width:250px;
+    height:215px;
+}
+.tooltip p{
+    margin:0;
+    padding:0;
+    color:#000000;
+    text-align: center;
+    background-color:#E3E0B6;
+    padding:2px 7px;
+}
+.tooltipper{
+    width:250px;
+    height:215px;
+
+}
+</style>
+</head>
+<body>
+    <div id="map">
+        <img id="map-img" src="images/1842map.png" width="1800" height="2338"/>
+
+    </div>
+
+    <div class="scroll">
+        <ul>
+            <!-- Define photos here -->
+            <li><a href="mepkin-plantation.html"><img class="tooltipper" id="mepkin" title="Mepkin Plantation" src="images/img1.jpg"/></a></li>
+            <li><p class="image-title">Mepkin Plantation</p></li>
+            <li><img class="tooltipper" id="biggins" title="Biggins Church" src="images/img2.jpg"/></li>
+            <li><p class="image-title">Biggins Church</p></li>
+            <li><img class="tooltipper" id="strawberry" title="Strawberry Chapel" src="images/img3.jpg"/></li>
+            <li><p class="image-title">Strawberry Chapel</p></li>
+            <li><img class="tooltipper" id="parnassus" title="Parnassus and the Cottage" src="images/img4.jpg"/></li>
+            <li><p class="image-title">Parnassus and the Cottage</p></li>
+            <li><img class="tooltipper" src="images/img5.jpg"/></li>
+            <li><p class="image-title">Strawberry Chapel</p></li>
+            <li><img class="tooltipper" src="images/img6.jpg"/></li>
+            <li><p class="image-title">Strawberry Chapel</p></li>
+        </ul>
+    </div>
+
+
+<script type="text/javascript">
+
+
+function simple_tooltip(target_items, name){
+ $(target_items).each(function(i){
+        $("body").append("<div class='"+name+"' id='"+name+i+"'><p>"+$(this).attr('title')+"<img src='"+$(this).attr('src')+"'/></div>");
+        var my_tooltip = $("#"+name+i);
+
+        $(this).removeAttr("title").mouseover(function(){
+                my_tooltip.css({opacity:1, display:"none"}).fadeIn(400);
+        }).mousemove(function(kmouse){
+            if ($(this).attr('id')==='mepkin'){
+                my_tooltip.css({left:300, top:233});
+            }else if ($(this).attr('id')==='biggins'){
+                my_tooltip.css({left:210, top:102});
+            }else if ($(this).attr('id')==='strawberry'){
+                my_tooltip.css({left:343, top:253});
+            }else if ($(this).attr('id')==='parnassus'){
+                my_tooltip.css({left:378, top:375});
+            }
+
+        }).mouseout(function(){
+                my_tooltip.fadeOut(400);
+        });
+    });
+}
+$(document).ready(function(){
+     simple_tooltip(".tooltipper","tooltip");
+});
+</script>
+
+</body>
+</html>
