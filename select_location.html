@@ -2,12 +2,13 @@
 <html>
 <head>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-<script type="text/javascript" src="/js/tipped/tipped.js"></script>
-<link rel="stylesheet" type="text/css" href="/css/tipped/tipped.css"/>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
 <style>
 html, body {
     height: 100%;
+    width: 100%;
 }
 div.scroll {
     position:absolute;
@@ -24,11 +25,15 @@ div.scroll ul{
     float:left;
     position: absolute;
     height: 100%;
+    width: 73%;
+    border:25px solid #000000;
+    overflow: hidden;
 
 }
 #map-img {
-    max-width: 73%;
-    height: 100%;
+    /*height: inherit;
+    width: 100%;*/
+    position: relative;
 }
 
 .image-title{
@@ -73,8 +78,8 @@ div.scroll ul{
     <div class="scroll">
         <ul>
             <!-- Define photos here -->
-            <li><a href="mepkin-plantation.html"><img class="tooltipper" id="mepkin" title="Mepkin Plantation" src="images/img1.jpg"/></a></li>
-            <li><p class="image-title">Mepkin Plantation</p></li>
+            <li><img class="tooltipper" id="mepkin" title="Mepkin Plantation" src="images/img1.jpg"/></li>
+            <li><a href="mepkin-plantation.html"><p class="image-title">Mepkin Plantation</p></a></li>
             <li><img class="tooltipper" id="biggins" title="Biggins Church" src="images/img2.jpg"/></li>
             <li><p class="image-title">Biggins Church</p></li>
             <li><img class="tooltipper" id="strawberry" title="Strawberry Chapel" src="images/img3.jpg"/></li>
@@ -94,29 +99,47 @@ div.scroll ul{
 
 function simple_tooltip(target_items, name){
  $(target_items).each(function(i){
-        $("body").append("<div class='"+name+"' id='"+name+i+"'><p>"+$(this).attr('title')+"<img src='"+$(this).attr('src')+"'/></div>");
+        $("#map").append("<div class='"+name+"' id='"+name+i+"'><p>"+$(this).attr('title')+"<img src='"+$(this).attr('src')+"'/></div>");
         var my_tooltip = $("#"+name+i);
 
         $(this).removeAttr("title").mouseover(function(){
                 my_tooltip.css({opacity:1, display:"none"}).fadeIn(400);
         }).mousemove(function(kmouse){
-            if ($(this).attr('id')==='mepkin'){
-                my_tooltip.css({left:300, top:233});
-            }else if ($(this).attr('id')==='biggins'){
-                my_tooltip.css({left:210, top:102});
-            }else if ($(this).attr('id')==='strawberry'){
-                my_tooltip.css({left:343, top:253});
-            }else if ($(this).attr('id')==='parnassus'){
-                my_tooltip.css({left:378, top:375});
-            }
+            // if ($(this).attr('id')==='mepkin'){
+            //     my_tooltip.css({left:"50%", top:"50%"});
+            // }else if ($(this).attr('id')==='biggins'){
+            //     my_tooltip.css({left:210, top:102});
+            // }else if ($(this).attr('id')==='strawberry'){
+            //     my_tooltip.css({left:343, top:253});
+            // }else if ($(this).attr('id')==='parnassus'){
+            //     my_tooltip.css({left:378, top:375});
+            // }
+            my_tooltip.css({left:"50%", top:"50%"});
 
         }).mouseout(function(){
                 my_tooltip.fadeOut(400);
+                //alert(JSON.stringify($("#map-img").position()));
         });
     });
 }
+function animate_map(){
+    $("#map-img").animate({top: '-250px'});
+    
+}
 $(document).ready(function(){
      simple_tooltip(".tooltipper","tooltip");
+     $("#map-img").draggable();
+     $(".tooltipper").click(function(){
+        if ($(this).attr('id')==='mepkin'){
+            $("#map-img").animate({top: '-192px', left: '-147px'});   
+        }else if ($(this).attr('id')==='biggins'){
+            $("#map-img").animate({top: '148px', left: '27px'});   
+        }else if ($(this).attr('id')==='strawberry'){
+            $("#map-img").animate({top: '-247px', left: '-233px'});   
+        }else if ($(this).attr('id')==='parnassus'){
+            $("#map-img").animate({top: '-562px', left: '-318px'});   
+        }
+    });
 });
 </script>
 
