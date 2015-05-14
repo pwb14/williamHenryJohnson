@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
@@ -29,13 +29,13 @@ div.scroll ul{
     overflow: hidden;
 }
 #map {
-    
     position: relative;
     height: 500px;
     width: 500px;
     top: 25%;
     margin: 0 auto;
     overflow: hidden;
+    border: 10px solid #000000;
 
 }
 #map-img {
@@ -56,11 +56,18 @@ div.scroll ul{
     padding:5px;
     border:1px solid #000000;
     width:265px;
-    border-radius: 0px 25px 25px 25px;
+    border-radius: 25px 0px 25px 25px;
+    overflow: hidden;
 }
+.tooltip-title{
+    text-align: center;
+}
+
 .tooltip img{
-    width:250px;
-    height:215px;
+    width:100%;
+    height:100%;
+/*    width:250px;
+    height:215px;*/
 }
 .tooltip p{
     margin:0;
@@ -71,34 +78,43 @@ div.scroll ul{
     padding:2px 7px;
 }
 .tooltipper{
-    width:250px;
-    height:215px;
+    /*width:250px;
+    height:215px;*/
+    width:100%;
+    height:100%;
 
 }
+
 </style>
 </head>
 <body>
+    <div id="radio">
+        <input type="radio" id="radio1" name="radio" value="small"><label for="radio1">Small</label>
+        <input type="radio" id="radio2" name="radio" value="med"><label for="radio2">Medium</label>
+        <input type="radio" id="radio3" name="radio" value="large" checked="checked"><label for="radio3">Large</label>
+    </div>
     <div id="map-container">
     <div id="map">
         <img id="map-img" src="images/1842map.png" width="1800" height="2338"/>
 
     </div>
     </div>
-    <div class="scroll">
+    <div id="scroll" class="scroll">
         <ul>
             <!-- Define photos here -->
-            <li><img class="tooltipper" id="mepkin" title="Mepkin Plantation" src="images/img1.jpg"/></li>
             <li><a href="mepkin-plantation.html"><p class="image-title">Mepkin Plantation</p></a></li>
-            <li><img class="tooltipper" id="biggins" title="Biggins Church" src="images/img2.jpg"/></li>
+            <li><img class="tooltipper" id="mepkin" title="Mepkin Plantation" alt="Possessing many natural beauties and famous in stories, Mepkin was the residence and burial place of Henry Laurens, who died on 8th December, 1792, near the close of his 69th year.  By his will he enjoined Mepkin upon his son and was cremated and placed in the family sepulchre.  Today, Mepkin is the home of a Catholic Abbey and mushroom farm." src="images/img1.jpg"/></li>
             <li><p class="image-title">Biggins Church</p></li>
-            <li><img class="tooltipper" id="strawberry" title="Strawberry Chapel" src="images/img3.jpg"/></li>
+            <li><img class="tooltipper" id="biggins" title="Biggins Church" src="images/img2.jpg"/></li>
             <li><p class="image-title">Strawberry Chapel</p></li>
-            <li><img class="tooltipper" id="parnassus" title="Parnassus and the Cottage" src="images/img4.jpg"/></li>
+            <li><img class="tooltipper" id="strawberry" title="Strawberry Chapel" src="images/img3.jpg"/></li>
             <li><p class="image-title">Parnassus and the Cottage</p></li>
+            <li><img class="tooltipper" id="parnassus" title="Parnassus and the Cottage" src="images/img4.jpg"/></li>
+            <li><p class="image-title">Strawberry Chapel</p></li>
             <li><img class="tooltipper" src="images/img5.jpg"/></li>
             <li><p class="image-title">Strawberry Chapel</p></li>
             <li><img class="tooltipper" src="images/img6.jpg"/></li>
-            <li><p class="image-title">Strawberry Chapel</p></li>
+            
         </ul>
     </div>
 
@@ -108,18 +124,18 @@ div.scroll ul{
 
 function simple_tooltip(target_items, name){
  $(target_items).each(function(i){
-        $("#map").append("<div class='"+name+"' id='"+name+i+"'><p>"+$(this).attr('title')+"<img src='"+$(this).attr('src')+"'/></div>");
+        $("body").append("<div class='"+name+"' id='"+name+i+"'><h3 class='tooltip-title'>"+$(this).attr('title')+"</h3><p>"+$(this).attr('alt')+"</p></div>");
         var my_tooltip = $("#"+name+i);
 
         $(this).removeAttr("title").mouseover(function(){
                 my_tooltip.css({opacity:1, display:"none"}).fadeIn(400);
         }).mousemove(function(kmouse){
             
-            my_tooltip.css({left:"50%", top:"50%"});
+            my_tooltip.css({left:kmouse.pageX-270, top:kmouse.pageY+15});
 
         }).mouseout(function(){
                 my_tooltip.fadeOut(400);
-                alert(JSON.stringify($("#map-img").position()));
+                //alert(JSON.stringify($("#map-img").position()));
                 
         });
     });
@@ -127,19 +143,43 @@ function simple_tooltip(target_items, name){
 
     
 $(document).ready(function(){
-     simple_tooltip(".tooltipper","tooltip");
-     $("#map-img").draggable();
-     $(".tooltipper").click(function(){
+    var med={width: "900px",height: "1169px"};
+    var large={width: "1800px",height: "2338px"};
+    var small={width: "450px",height: "584px"};
+
+    simple_tooltip(".tooltipper","tooltip");
+    $("#map-img").draggable();
+    //$("#map").resizable();
+
+    $("#map-img").css({top:"-967px", left:"-644px"});
+    $(".tooltipper").click(function(){
+        if($('input[type="radio"]:checked').val()!=="large"){
+            $('input[name=radio][value=large]').attr('checked', true);
+            $("#map-img").animate(large);
+        }
         if ($(this).attr('id')==='mepkin'){
             $("#map-img").animate({top: '-385px', left: '-358px'});   
         }else if ($(this).attr('id')==='biggins'){
-            $("#map-img").animate({top: '148px', left: '27px'});   
+            $("#map-img").animate({top: '-22px', left: '-188px'});   
         }else if ($(this).attr('id')==='strawberry'){
-            $("#map-img").animate({top: '-247px', left: '-233px'});   
-        }else if ($(this).attr('id')==='parnassus'){
-            $("#map-img").animate({top: '-562px', left: '-318px'});   
+            $("#map-img").animate({top: '-432px', left: '-455px'});   
+        }else if ($(this).attr('id')==='parnassus'){            
+            $("#map-img").animate({top: '-745px', left: '-529px'});   
         }
-
+    });
+    $("#radio").click(function() { 
+            var val= $('input[type="radio"]:checked').val();
+            if(val==="small"){
+                $("#map-img").animate(small);
+                $("#map-img").css({top:"-31px", left:"20px"});
+            }else if(val==="med"){
+                $("#map-img").animate(med);
+                $("#map-img").css({top:"-359px", left:"-207px"});
+            }else{
+                $("#map-img").animate(large);
+                $("#map-img").css({top:"-967px", left:"-644px"});
+            }
+            // $("#map-img").animate({top:""});
     });
 });
 </script>
